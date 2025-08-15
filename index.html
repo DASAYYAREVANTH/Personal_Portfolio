@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dasayya Revanth • Portfolio</title>
+  <meta name="description" content="Interactive, colorful portfolio for Dasayya Revanth – CSE student, full‑stack & ML projects." />
+  <link rel="icon" href="data:image/svg+xml,%F0%9F%8C%9F" />
+  <style>
+    :root {
+      --bg: #0b1021;
+      --card: rgba(255,255,255,0.06);
+      --text: #e8ecff;
+      --muted: #b6c2ff;
+      --brand: #7c4dff;   /* violet */
+      --brand-2: #00e5ff; /* cyan */
+      --accent: #ff7ad9;  /* pink */
+      --ring: rgba(124,77,255,.5);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+      --glass: blur(8px) saturate(120%);
+    }
+
+    /* Light mode */
+    @media (prefers-color-scheme: light) {
+      :root { --bg: #f7f7ff; --card: rgba(255,255,255,.9); --text:#0f1226; --muted:#333a66; --shadow: 0 10px 25px rgba(0,0,0,.12);}  
+    }
+
+    [data-theme="light"] { --bg: #f7f7ff; --card: rgba(255,255,255,.9); --text:#0f1226; --muted:#333a66; --shadow: 0 10px 25px rgba(0,0,0,.12);}  
+
+    * { box-sizing: border-box }
+    html, body { height: 100% }
+    body {
+      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background:
+        radial-gradient(1200px 800px at 10% -20%, rgba(124,77,255,.35), transparent 60%),
+        radial-gradient(1000px 700px at 110% 0%, rgba(0,229,255,.25), transparent 60%),
+        radial-gradient(900px 600px at 50% 100%, rgba(255,122,217,.24), transparent 60%),
+        var(--bg);
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 24px }
+
+    header.nav {
+      position: sticky; top: 0; z-index: 40; backdrop-filter: var(--glass); background: linear-gradient( to bottom, rgba(10,12,25,.85), rgba(10,12,25,.55)); border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .nav .inner { display:flex; align-items:center; gap:16px; justify-content:space-between; padding: 8px 24px; }
+    .brand { display:flex; gap:12px; align-items:center; text-decoration:none; color:var(--text); font-weight:700 }
+    .brand .logo { width:38px; height:38px; border-radius:12px; background: linear-gradient(135deg, var(--brand), var(--brand-2)); display:grid; place-items:center; box-shadow: var(--shadow) }
+    .brand .logo span { font-size: 20px }
+
+    .nav a { color: var(--muted); text-decoration:none; font-weight:600 }
+    .nav a:hover { color: var(--text) }
+    .nav .links { display:flex; gap:18px; align-items:center }
+
+    .btn { display:inline-flex; align-items:center; gap:10px; padding:10px 14px; border-radius: 999px; font-weight:700; border: 1px solid rgba(255,255,255,.15); background: linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.02)); box-shadow: var(--shadow); color:var(--text) }
+    .btn:hover { transform: translateY(-1px); }
+
+    .theme { cursor:pointer }
+
+    /* Hero */
+    .hero { display:grid; grid-template-columns: 1.1fr .9fr; gap:28px; align-items:center; padding: 36px 24px 10px }
+    .card { background: var(--card); backdrop-filter: var(--glass); border: 1px solid rgba(255,255,255,.12); border-radius: var(--radius); box-shadow: var(--shadow) }
+    .hero .card { padding: 26px }
+    h1 { font-size: clamp(28px, 5vw, 44px); margin: 0 0 8px; letter-spacing: .3px }
+    .subtitle { color: var(--muted); font-size: clamp(14px, 2.3vw, 18px) }
+
+    .chips { margin-top: 18px; display:flex; flex-wrap:wrap; gap:12px }
+    .chip { padding:8px 12px; border-radius: 999px; font-weight:700; font-size: 13px; background: linear-gradient(135deg, rgba(124,77,255,.2), rgba(0,229,255,.2)); border: 1px solid rgba(255,255,255,.15) }
+
+    .contactgrid { display:grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 16px }
+    .contact { display:flex; align-items:center; gap:10px; padding: 10px 12px; border-radius: 12px; border:1px dashed rgba(255,255,255,.18); }
+    .contact .k { color: var(--muted); font-weight:700; width:86px }
+    .contact .v { font-weight:700 }
+    .contact a { color: var(--text) }
+
+    /* Sections */
+    section { scroll-margin-top: 80px; }
+    .section { margin: 28px 0; padding: 24px }
+    .section h2 { margin:0 0 12px; font-size: 26px }
+    .muted { color: var(--muted) }
+
+    /* Skills */
+    .skills { display:grid; grid-template-columns: repeat(3, 1fr); gap: 14px }
+    .skill { padding: 14px; border-radius: 14px; border:1px solid rgba(255,255,255,.14) }
+    .bar { position:relative; height:10px; border-radius: 999px; background: rgba(255,255,255,.15); overflow:hidden; margin-top:8px }
+    .bar > i { position:absolute; inset:0; transform: scaleX(0); transform-origin: left; transition: transform 1s ease .1s; background: linear-gradient(90deg, var(--brand), var(--brand-2), var(--accent)); }
+
+    /* Grid cards */
+    .grid { display:grid; grid-template-columns: repeat(12, 1fr); gap: 16px }
+    .col-6 { grid-column: span 6 }
+    .col-4 { grid-column: span 4 }
+    .col-8 { grid-column: span 8 }
+    .col-12 { grid-column: span 12 }
+
+    /* Projects */
+    .p-toolbar { display:flex; gap:10px; align-items:center; justify-content:space-between; margin-bottom: 8px}
+    .p-toolbar input { width: 50%; min-width: 220px; padding:10px 12px; border-radius: 999px; border:1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.08); color: var(--text) }
+    .tags { display:flex; flex-wrap: wrap; gap:8px }
+    .tag { padding:6px 10px; border-radius: 999px; font-weight:700; font-size:12px; border:1px solid rgba(255,255,255,.2); cursor:pointer }
+    .tag.active { outline: 2px solid var(--ring) }
+
+    .project { position:relative; overflow:hidden; padding:18px }
+    .project h3 { margin: 6px 0 8px }
+    .project .meta { font-size: 13px; color: var(--muted) }
+    .project .cta { margin-top: 10px }
+
+    /* Timeline */
+    .timeline { position:relative; padding-left: 20px }
+    .timeline::before { content:""; position:absolute; left:7px; top:0; bottom:0; width:2px; background: linear-gradient(180deg, var(--brand), var(--brand-2)) }
+    .t-item { position:relative; margin: 14px 0; padding: 12px 14px; border:1px solid rgba(255,255,255,.14); border-radius: 12px }
+    .t-item::before { content:""; position:absolute; left:-2px; top:16px; width:12px; height:12px; border-radius:8px; background: var(--brand-2); box-shadow: 0 0 0 4px rgba(0,229,255,.2) }
+
+    /* Modal */
+    dialog.modal { border:none; border-radius: 16px; background: var(--card); color:var(--text); padding:0; width:min(680px, 92vw) }
+    .modal header { display:flex; align-items:center; justify-content:space-between; padding: 16px 18px; border-bottom:1px solid rgba(255,255,255,.12) }
+    .modal .content { padding: 18px }
+    .x { background: transparent; border:none; font-size: 22px; color: var(--text); cursor:pointer }
+
+    /* Contact */
+    form { display:grid; gap: 12px; }
+    input, textarea { padding:12px 14px; border-radius: 12px; border:1px solid rgba(255,255,255,.16); background: rgba(255,255,255,.08); color: var(--text) }
+    textarea { min-height: 120px }
+
+    footer { text-align:center; color: var(--muted); padding: 20px 0 28px }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; }
+      .skills { grid-template-columns: repeat(2, 1fr) }
+      .p-toolbar input { width: 100% }
+      .col-6, .col-4, .col-8, .col-12 { grid-column: span 12 }
+    }
+
+    @media (max-width: 520px) {
+      .contactgrid { grid-template-columns: 1fr }
+      .skills { grid-template-columns: 1fr }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="inner wrap">
+      <a class="brand" href="#top">
+        <div class="logo" aria-hidden="true"><span>DR</span></div>
+        <div>Dasayya Revanth<br><small class="muted">CSE • Full‑Stack • ML</small></div>
+      </a>
+      <nav class="links">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#experience">Experience</a>
+        <a href="#education">Education</a>
+        <a href="#awards">Awards</a>
+        <a href="#certs">Certifications</a>
+        <button id="themeToggle" class="btn theme" title="Toggle theme">🌗 Theme</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top" class="wrap">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="card">
+        <h1>Hi, I'm Revanth — I build web apps and machine learning solutions.</h1>
+        <p class="subtitle">Enthusiastic Computer Science & Engineering student (B‑Tech, 2026) with hands‑on experience in Java, Python, SQL, Flask/Spring Boot, and ML. Strong problem‑solving and a passion for shipping polished products.</p>
+        <div class="chips" aria-label="Highlights">
+          <span class="chip">Open to Relocate / On‑Site</span>
+          <span class="chip">CGPA: 8.14</span>
+          <span class="chip">India</span>
+        </div>
+        <div class="contactgrid">
+          <div class="contact"><span class="k">Email</span><span class="v"><a href="mailto:revanthd9676@gmail.com">revanthd9676@gmail.com</a></span><button class="btn" data-copy="revanthd9676@gmail.com">Copy</button></div>
+          <div class="contact"><span class="k">Phone</span><span class="v"><a href="tel:+918465808779">+91 84658 08779</a></span><button class="btn" data-copy="+918465808779">Copy</button></div>
+          <div class="contact"><span class="k">LinkedIn</span><span class="v"><a target="_blank" rel="noopener" href="https://www.linkedin.com/in/dasayya-revanth-501611268">/in/dasayya-revanth</a></span></div>
+          <div class="contact"><span class="k">GitHub</span><span class="v"><a target="_blank" rel="noopener" href="https://github.com/DASAYYAREVANTH">@DASAYYAREVANTH</a></span></div>
+        </div>
+        <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap">
+          <a class="btn" href="#projects">🚀 View Projects</a>
+          <a class="btn" href="#contact">✉️ Contact</a>
+          <a class="btn" href="DASAYYA_REVANTH.pdf" download>⬇️ Download Resume</a>
+        </div>
+      </div>
+      <div class="card" aria-label="Skill snapshot">
+        <h3>Tech Snapshot</h3>
+        <div class="chips">
+          <span class="chip">Java</span>
+          <span class="chip">Python</span>
+          <span class="chip">C</span>
+          <span class="chip">SQL</span>
+          <span class="chip">React</span>
+          <span class="chip">Flask</span>
+          <span class="chip">Spring Boot</span>
+          <span class="chip">Machine Learning</span>
+          <span class="chip">Power BI</span>
+          <span class="chip">Tableau</span>
+          <span class="chip">Postman</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section card">
+      <h2>About</h2>
+      <p>I'm a Computer Science & Engineering student who loves turning ideas into real, usable software. Recently, I worked on a stock market forecasting model (time‑series ML) and built full‑stack apps with React + Spring Boot and Flask. I enjoy clean UX, data‑driven decisions, and teamwork.</p>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="section card">
+      <h2>Skills</h2>
+      <div class="skills">
+        <div class="skill">
+          <strong>Programming</strong>
+          <div class="bar" data-level="90"><i></i></div>
+          <div class="muted">Java • Python • C • SQL</div>
+        </div>
+        <div class="skill">
+          <strong>Web</strong>
+          <div class="bar" data-level="85"><i></i></div>
+          <div class="muted">React • Flask • Spring Boot</div>
+        </div>
+        <div class="skill">
+          <strong>Data & ML</strong>
+          <div class="bar" data-level="80"><i></i></div>
+          <div class="muted">ML • Data Analysis • DSA • Viz</div>
+        </div>
+        <div class="skill">
+          <strong>Tools</strong>
+          <div class="bar" data-level="75"><i></i></div>
+          <div class="muted">Power BI • Tableau • Postman</div>
+        </div>
+        <div class="skill">
+          <strong>Soft Skills</strong>
+          <div class="bar" data-level="88"><i></i></div>
+          <div class="muted">Leadership • Communication • Decision Making</div>
+        </div>
+        <div class="skill">
+          <strong>Languages</strong>
+          <div class="bar" data-level="70"><i></i></div>
+          <div class="muted">Telugu • English • Kannada • Tamil</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="section card">
+      <div class="p-toolbar">
+        <h2>Projects</h2>
+        <input id="projectSearch" type="search" placeholder="Search projects… (e.g., React, Flask, ML)" aria-label="Search projects" />
+      </div>
+      <div class="tags" role="listbox" aria-label="Filter by tag">
+        <button class="tag active" data-tag="all">All</button>
+        <button class="tag" data-tag="web">Web</button>
+        <button class="tag" data-tag="ml">ML</button>
+      </div>
+
+      <div class="grid" style="margin-top:14px">
+        <article class="project col-6" data-tags="web react spring mysql ecommerce">
+          <h3>E‑Commerce Web App</h3>
+          <div class="meta">React + Spring Boot (Java) • MySQL</div>
+          <p>Full‑stack e‑commerce with listings, cart, and order flow. Responsive React (Vite) frontend and RESTful Java backend with secure MySQL storage.</p>
+          <ul>
+            <li>Checkout efficiency improved ~30% in testing.</li>
+            <li>100% transaction accuracy in QA.</li>
+          </ul>
+          <div class="cta">
+            <button class="btn open-modal" data-modal="modal-ecomm">🔎 Details</button>
+          </div>
+        </article>
+
+        <article class="project col-6" data-tags="ml flask scikit churn python">
+          <h3>Customer Churn Prediction</h3>
+          <div class="meta">Python • Scikit‑learn • Flask</div>
+          <p>Classification model to predict churn with a simple Flask UI and REST API for real‑time risk scoring.</p>
+          <ul>
+            <li>Model accuracy: 88% on test.</li>
+            <li>Recall for churners improved by 15% via feature engineering.</li>
+            <li>Real‑time scoring for 1,000+ customers.</li>
+          </ul>
+          <div class="cta">
+            <button class="btn open-modal" data-modal="modal-churn">🔎 Details</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE / INTERNSHIP -->
+    <section id="experience" class="section card">
+      <h2>Experience</h2>
+      <div class="timeline">
+        <div class="t-item">
+          <strong>Data Science & Analytics Intern – Zidio Development (Virtual)</strong>
+          <div class="muted">Jun 2025 – Aug 2025</div>
+          <ul>
+            <li>Built a stock‑market forecasting model (time‑series), improving accuracy by ~15% with better preprocessing & tuning.</li>
+            <li>Applied Python, stats, and ML to deliver forecasting insights.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education" class="section card">
+      <h2>Education</h2>
+      <div class="timeline">
+        <div class="t-item">
+          <strong>B‑Tech – Computer Science & Engineering</strong>
+          <div class="muted">Kalasalingam Academy of Research and Education (KARE), Virudhunagar • CGPA: 8.14 • 2026</div>
+        </div>
+        <div class="t-item">
+          <strong>Class XII – MPC</strong>
+          <div class="muted">Narayana Junior College, Hindupur • 88.6% • 2022</div>
+        </div>
+        <div class="t-item">
+          <strong>Class X</strong>
+          <div class="muted">Sri Chaitanya School, Anantapur • 600/600 • 2020</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AWARDS -->
+    <section id="awards" class="section card">
+      <h2>Awards & Achievements</h2>
+      <ul>
+        <li>IBM Silver Medal — Paper presentation on <em>Brain Tumor Segmentation using Deep Learning in Predictive Analytics</em> at KARE.</li>
+      </ul>
+    </section>
+
+    <!-- CERTIFICATIONS -->
+    <section id="certs" class="section card">
+      <h2>Certifications</h2>
+      <ul>
+        <li>Entrepreneurship, Python & Artificial Intelligence — Google Developer Student Club</li>
+        <li>Design and Analysis of Algorithms — CodeChef</li>
+        <li>Database Management System — CodeChef</li>
+      </ul>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section card">
+      <h2>Contact</h2>
+      <p class="muted">Have an opportunity or want to collaborate? Send a message below or email me.</p>
+      <form id="contactForm">
+        <input required name="name" placeholder="Your name" />
+        <input required name="email" type="email" placeholder="Your email" />
+        <textarea required name="message" placeholder="Your message" ></textarea>
+        <div style="display:flex; gap:10px; flex-wrap:wrap">
+          <button class="btn" type="submit">📮 Send</button>
+          <a class="btn" href="mailto:revanthd9676@gmail.com?subject=Hello%20Revanth">✉️ Email</a>
+        </div>
+        <p id="formStatus" class="muted" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <footer>
+      © <span id="year"></span> Dasayya Revanth • Built with HTML, CSS & JS
+    </footer>
+  </main>
+
+  <!-- MODALS -->
+  <dialog id="modal-ecomm" class="modal">
+    <header>
+      <strong>E‑Commerce Web App — Details</strong>
+      <button class="x" data-close>×</button>
+    </header>
+    <div class="content">
+      <p>Designed a responsive storefront with product listings, cart, and order workflows. Implemented authentication, form validation, and a REST API.</p>
+      <ul>
+        <li><strong>Frontend:</strong> React + Vite, custom hooks, client‑side routing</li>
+        <li><strong>Backend:</strong> Spring Boot (Java), layered architecture, REST controllers</li>
+        <li><strong>Database:</strong> MySQL with proper indexing and constraints</li>
+        <li><strong>Outcomes:</strong> ~30% faster checkout; 100% transactional correctness in tests</li>
+      </ul>
+    </div>
+  </dialog>
+
+  <dialog id="modal-churn" class="modal">
+    <header>
+      <strong>Customer Churn Prediction — Details</strong>
+      <button class="x" data-close>×</button>
+    </header>
+    <div class="content">
+      <p>End‑to‑end ML workflow with data cleaning, feature engineering, model selection (e.g., Logistic Regression, Random Forest), and a Flask app for serving predictions.</p>
+      <ul>
+        <li><strong>Model:</strong> 88% accuracy; recall +15% on churners</li>
+        <li><strong>Serving:</strong> Flask REST API, JSON payloads</li>
+        <li><strong>Scale:</strong> 1,000+ customer records in demo</li>
+      </ul>
+    </div>
+  </dialog>
+
+  <script>
+    // Smooth scroll for in‑page links
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', (e)=>{
+        const id = a.getAttribute('href');
+        const el = document.querySelector(id);
+        if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); }
+      });
+    });
+
+    // Theme toggle with persistence
+    const themeToggle = document.getElementById('themeToggle');
+    const storedTheme = localStorage.getItem('theme');
+    if(storedTheme) document.documentElement.setAttribute('data-theme', storedTheme);
+    themeToggle?.addEventListener('click', ()=>{
+      const curr = document.documentElement.getAttribute('data-theme');
+      const next = curr === 'light' ? '' : 'light';
+      if(next) document.documentElement.setAttribute('data-theme', next); else document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('theme', next);
+    });
+
+    // Copy buttons
+    document.querySelectorAll('[data-copy]').forEach(btn=>{
+      btn.addEventListener('click', async ()=>{
+        const text = btn.getAttribute('data-copy');
+        try { await navigator.clipboard.writeText(text); btn.textContent = 'Copied!'; setTimeout(()=>btn.textContent='Copy', 1200); }
+        catch { alert('Copy failed, please copy manually: '+text); }
+      })
+    })
+
+    // Reveal bars when in view
+    const bars = document.querySelectorAll('.bar > i');
+    const io = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{ if(e.isIntersecting) e.target.style.transform = `scaleX(${e.target.parentElement.dataset.level/100})`; })
+    }, { threshold: .4 });
+    bars.forEach(b=> io.observe(b));
+
+    // Project filtering + search
+    const tagEls = document.querySelectorAll('.tag');
+    const search = document.getElementById('projectSearch');
+    const projects = [...document.querySelectorAll('.project')];
+    let activeTag = 'all';
+
+    function applyFilters(){
+      const q = (search.value || '').toLowerCase().trim();
+      projects.forEach(p=>{
+        const tags = p.dataset.tags;
+        const matchesTag = activeTag === 'all' || tags.includes(activeTag);
+        const matchesQ = !q || p.textContent.toLowerCase().includes(q);
+        p.style.display = (matchesTag && matchesQ) ? '' : 'none';
+      })
+    }
+
+    tagEls.forEach(t=> t.addEventListener('click', ()=>{
+      tagEls.forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+      activeTag = t.dataset.tag;
+      applyFilters();
+    }))
+
+    search.addEventListener('input', applyFilters);
+
+    // Modals
+    document.querySelectorAll('.open-modal').forEach(btn=>{
+      const id = btn.dataset.modal;
+      const dlg = document.getElementById(id);
+      btn.addEventListener('click', ()=> dlg.showModal());
+      dlg.querySelector('[data-close]').addEventListener('click', ()=> dlg.close());
+    })
+
+    // Contact form (client‑only demo)
+    const form = document.getElementById('contactForm');
+    const status = document.getElementById('formStatus');
+    form?.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries());
+      status.textContent = 'Sending…';
+      // Demo: open a prefilled mailto
+      const body = encodeURIComponent(`Name: ${data.name}\nEmail: ${data.email}\n\n${data.message}`);
+      window.location.href = `mailto:revanthd9676@gmail.com?subject=Portfolio%20Message&body=${body}`;
+      status.textContent = 'Opened your email client. Thanks!';
+      form.reset();
+    })
+
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
